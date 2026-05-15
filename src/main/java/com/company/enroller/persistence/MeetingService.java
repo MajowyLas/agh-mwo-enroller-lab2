@@ -4,6 +4,7 @@ import com.company.enroller.model.Meeting;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
+import org.hibernate.Transaction;
 
 import java.util.Collection;
 
@@ -22,4 +23,27 @@ public class MeetingService {
 		return query.list();
 	}
 
+	public Meeting findById(long id) {
+		String hql = "FROM Meeting WHERE id = :id";
+		Query query = this.session.createQuery(hql);
+		query.setParameter("id", id);
+		return (Meeting) query.uniqueResult();
+	}
+	public void add(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		this.session.save(meeting);
+		transaction.commit();
+	}
+
+	public void delete(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		this.session.delete(meeting);
+		transaction.commit();
+	}
+
+	public void update(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		this.session.merge(meeting);
+		transaction.commit();
+	}
 }

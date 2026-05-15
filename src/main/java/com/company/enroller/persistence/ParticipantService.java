@@ -16,9 +16,13 @@ public class ParticipantService {
         connector = DatabaseConnector.getInstance();
     }
 
-    public Collection<Participant> getAll() {
-        String hql = "FROM Participant";
+    public Collection<Participant> getAll(String key) {
+        boolean filter = key != null && !key.isEmpty();
+        String hql = "FROM Participant" + (filter ? " WHERE login LIKE :key" : "");
         Query query = connector.getSession().createQuery(hql);
+        if (filter) {
+            query.setParameter("key", "%" + key + "%");
+        }
         return query.list();
     }
 

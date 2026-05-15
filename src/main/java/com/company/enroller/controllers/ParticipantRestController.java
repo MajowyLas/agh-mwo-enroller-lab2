@@ -18,8 +18,8 @@ public class ParticipantRestController {
 	ParticipantService participantService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ResponseEntity<?> getParticipants() {
-		Collection<Participant> participants = participantService.getAll();
+	public ResponseEntity<?> getParticipants(@RequestParam(value = "key", defaultValue = "") String key) {
+		Collection<Participant> participants = participantService.getAll(key);
 		return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
 	}
 
